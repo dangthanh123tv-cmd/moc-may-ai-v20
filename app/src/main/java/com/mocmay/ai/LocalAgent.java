@@ -12,13 +12,28 @@ public final class LocalAgent {
   if(t.equalsIgnoreCase("/models")){List<String> m=models.models();return m.isEmpty()?"Chưa có model GGUF.":String.join("\n",m);}
   if(t.startsWith("/model-info "))try{return models.describe(t.substring(12).trim());}catch(Exception e){return "Lỗi: "+e.getMessage();}
   if(t.startsWith("/delete-model ")){String n=t.substring(14).trim();if(n.equals(engine.loadedModel()))engine.unload();return models.delete(n)?"Đã xóa model.":"Không xóa được model.";}
-  if(t.startsWith("/load ")){String[] p=t.split("\\s+");if(p.length<2)return "Dùng: /load <name> [context] [threads]";int c=p.length>2?parse(p[2],2048):2048;int th=p.length>3?parse(p[3],Math.max(2,Math.min(4,Runtime.getRuntime().availableProcessors()/2))):Math.max(2,Math.min(4,Runtime.getRuntime().availableProcessors()/2));return engine.load(p[1],c,th)?"Đã tải model: "+p[1]+" (context="+c+", threads="+th+")":"Không tải được model.";}
+  if(t.startsWith("/load ")){
+   String[] p=t.split("\\s+");
+   if(p.length<2)return "Dùng: /load <name> [context] [threads]";
+   int c=p.length>2?parseContext(p[2],1024):1024;
+   int th=p.length>3?parseThreads(p[3],2):2;
+   return engine.load(p[1],c,th)
+      ?"Đã tải model: "+p[1]+" (context="+c+", threads="+th+")"
+      :"Không tải được model.";
+}
   if(t.equalsIgnoreCase("/unload")){engine.unload();return "Đã giải phóng model khỏi RAM.";}
   if(t.equalsIgnoreCase("/status"))return "Mộc Mây AI v20\nNative: "+engine.nativeAvailable()+"\nBackend: "+engine.backendInfo()+"\nLoaded model: "+(engine.loadedModel()==null?"none":engine.loadedModel())+"\nModel folder: app-private\nAPI key: không nhúng.";
   if(t.equalsIgnoreCase("/scan"))return "Security scan: OK. GGUF header + path + size + SHA-256; model chỉ ở app-private storage.";
   if(t.equalsIgnoreCase("/online"))return "Online connector đang khóa mặc định.";
   if(t.equalsIgnoreCase("/offline"))return "Đang ở OFFLINE.";
-  db.message("user",t);String a=engine.generate(t,256);db.message("assistant",a);return a;
+  db.message("user",t);String a=engine.generate(t,32);db.message("assistant",a);return a;
  }
- private int parse(String s,int d){try{return Math.max(256,Math.min(8192,Integer.parseInt(s)));}catch(Exception e){return d;}}
+ private int parseContext(String s,int d){
+  try{return Math.max(512,Math.min(2048,Integer.parseInt(s)));}
+  catch(Exception e){return d;}
+}
+private int parseThreads(String s,int d){
+  try{return Math.max(1,Math.min(4,Integer.parseInt(s)));}
+  catch(Exception e){return d;}
+}
 }

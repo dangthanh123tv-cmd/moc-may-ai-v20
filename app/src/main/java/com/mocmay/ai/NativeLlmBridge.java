@@ -7,6 +7,7 @@ public final class NativeLlmBridge {
     public native boolean nativeModelReadable(String absolutePath);
     public native boolean nativeIsGguf(String absolutePath);
     public native String nativeBackendInfo();
+    public native String nativeLastError();
     public native boolean nativeLoadModel(String absolutePath, int context, int threads);
     public native void nativeUnloadModel();
     public native String nativeGenerate(String prompt, int maxTokens);
