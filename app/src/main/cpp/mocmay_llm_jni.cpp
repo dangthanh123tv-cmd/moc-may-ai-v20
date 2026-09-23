@@ -129,10 +129,10 @@ Java_com_mocmay_ai_NativeLlmBridge_nativeGenerate(JNIEnv *env, jobject, jstring 
     }
 
     auto cp = llama_context_default_params();
-    cp.n_ctx = 2048;
-    cp.n_batch = 512;
-    cp.n_threads = 4;
-    cp.n_threads_batch = 4;
+    cp.n_ctx = 1024;
+    cp.n_batch = 128;
+    cp.n_threads = 2;
+    cp.n_threads_batch = 2;
 
     g.ctx = llama_init_from_model(g.model, cp);
     if (!g.ctx) {
@@ -236,7 +236,7 @@ Java_com_mocmay_ai_NativeLlmBridge_nativeGenerate(JNIEnv *env, jobject, jstring 
 
     int limit = std::max(
         1,
-        std::min(512, (int)maxTokens)
+        std::min(32, (int)maxTokens)
     );
 
     for (int i = 0; i < limit; ++i) {
