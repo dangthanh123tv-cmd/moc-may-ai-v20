@@ -18,7 +18,7 @@ jobs:
       - name: Install Android SDK/NDK
         run: sdkmanager "platforms;android-35" "build-tools;35.0.0" "ndk;29.0.13113456"
       - name: Fetch pinned llama.cpp
-        run: ./scripts/fetch-llama.sh
+        run: bash ./scripts/fetch-llama.sh
       - name: Setup Gradle
         uses: gradle/actions/setup-gradle@v4
       - name: Build debug APK
