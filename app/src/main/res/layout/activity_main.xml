@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android" android:orientation="vertical" android:padding="16dp" android:layout_width="match_parent" android:layout_height="match_parent">
+ <TextView android:id="@+id/mode" android:text="OFFLINE • Local" android:textStyle="bold" android:layout_width="match_parent" android:layout_height="wrap_content"/>
+ <ScrollView android:layout_width="match_parent" android:layout_height="0dp" android:layout_weight="1"><TextView android:id="@+id/chat" android:textSize="16sp" android:padding="8dp" android:layout_width="match_parent" android:layout_height="wrap_content"/></ScrollView>
+ <LinearLayout android:orientation="horizontal" android:layout_width="match_parent" android:layout_height="wrap_content">
+  <EditText android:id="@+id/input" android:hint="Nhắn cho Mộc Mây AI…" android:layout_width="0dp" android:layout_weight="1" android:layout_height="wrap_content"/>
+  <Button android:id="@+id/attach" android:text="📎" android:layout_width="wrap_content" android:layout_height="wrap_content"/>
+  <Button android:id="@+id/send" android:text="Gửi" android:layout_width="wrap_content" android:layout_height="wrap_content"/>
+ </LinearLayout>
+ <LinearLayout android:orientation="horizontal" android:layout_width="match_parent" android:layout_height="wrap_content">
+  <Button android:id="@+id/scan" android:text="Quét" android:layout_width="0dp" android:layout_weight="1" android:layout_height="wrap_content"/>
+  <Button android:id="@+id/settings" android:text="AI / Model" android:layout_width="0dp" android:layout_weight="1" android:layout_height="wrap_content"/>
+ </LinearLayout>
+</LinearLayout>
