@@ -9,8 +9,17 @@ public final class LocalEngine {
     public boolean nativeAvailable(){return nativeBridge.isNativeAvailable();}
     public String backendInfo(){return nativeAvailable()?nativeBridge.nativeBackendInfo():"Native bridge unavailable";}
     public synchronized boolean load(String name,int context,int threads){
-        try { if(!nativeAvailable()) return false; if(!models.exists(name)) return false; boolean ok=nativeBridge.nativeLoadModel(models.file(name).getAbsolutePath(),context,threads); if(ok) loadedModel=name; return ok; }
-        catch(Exception e){return false;}
+        try {
+            if(!nativeAvailable()) return false;
+            if(!models.exists(name)) return false;
+            boolean ok=nativeBridge.nativeLoadModel(
+                models.file(name).getAbsolutePath(), context, threads
+            );
+            if(ok) loadedModel=name;
+            return ok;
+        } catch(Exception e) {
+            return false;
+        }
     }
     public synchronized void unload(){nativeBridge.nativeUnloadModel();loadedModel=null;}
     public synchronized String loadedModel(){return loadedModel;}

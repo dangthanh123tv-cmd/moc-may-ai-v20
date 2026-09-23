@@ -160,8 +160,13 @@ Java_com_mocmay_ai_NativeLlmBridge_nativeGenerate(JNIEnv *env, jobject, jstring 
     messages[1].role = "user";
     messages[1].content = user_prompt.c_str();
 
+    const char * tmpl = llama_model_chat_template(g.model, nullptr);
+    if (!tmpl) {
+        return out(env, "__CHAT_TEMPLATE_NOT_FOUND__");
+    }
+
     int32_t needed = llama_chat_apply_template(
-        nullptr,
+        tmpl,
         messages,
         2,
         true,
@@ -176,7 +181,7 @@ Java_com_mocmay_ai_NativeLlmBridge_nativeGenerate(JNIEnv *env, jobject, jstring 
     std::vector<char> formatted((size_t)needed + 1);
 
     int32_t written = llama_chat_apply_template(
-        nullptr,
+        tmpl,
         messages,
         2,
         true,
@@ -267,7 +272,6 @@ Java_com_mocmay_ai_NativeLlmBridge_nativeGenerate(JNIEnv *env, jobject, jstring 
 
         result.append(buf, (size_t)len);
 
-        llama_sampler_accept(g.sampler, tok);
 
         batch = llama_batch_get_one(&tok, 1);
 
