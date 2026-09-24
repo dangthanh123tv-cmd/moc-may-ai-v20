@@ -18,5 +18,18 @@ public class ChatStore extends SQLiteOpenHelper {
     c.close(); return x.length()==0?"Bộ nhớ trống.":x.toString();
   }
   public void message(String role,String s){getWritableDatabase().execSQL("INSERT INTO messages(role,content,created) VALUES(?,?,?)",new Object[]{role,s,System.currentTimeMillis()});}
+  public String history(){
+    Cursor c=getReadableDatabase().rawQuery("SELECT role,content FROM messages ORDER BY id DESC LIMIT 12",null);
+    ArrayList<String> rows=new ArrayList<>();
+    while(c.moveToNext()) rows.add(c.getString(0)+": "+c.getString(1));
+    c.close();
+    if(rows.isEmpty()) return "Lịch sử trống.";
+    Collections.reverse(rows);
+    StringBuilder x=new StringBuilder();
+    for(String r:rows) x.append(r).append("\\n");
+    return x.toString();
+  }
+  public void clearMessages(){getWritableDatabase().execSQL("DELETE FROM messages");}
+
   public void clearMemory(){getWritableDatabase().execSQL("DELETE FROM memory");}
 }
