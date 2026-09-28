@@ -3,10 +3,7 @@ name: Mộc Mây AI static checks
 on:
   pull_request:
   push:
-    branches:
-      - main
-      - master
-      - moc-may-ai-v29
+    branches: [main, master, moc-may-ai-v29, moc-may-ai-v31]
 
 permissions:
   contents: read
@@ -25,9 +22,14 @@ jobs:
           test -f app/src/main/cpp/CMakeLists.txt
           test -f app/src/main/cpp/mocmay_llm_jni.cpp
           test -f .github/workflows/android-release.yml
+          test -f app/src/main/java/com/mocmay/ai/GeminiProxyClient.java
+          test -f app/src/main/java/com/mocmay/ai/UnifiedRouter.java
+          test -f app/src/main/java/com/mocmay/ai/SafeCalculator.java
+          test -f app/src/main/java/com/mocmay/ai/KnowledgeStore.java
+          test -f app/src/main/java/com/mocmay/ai/SecurityPolicy.java
           grep -q "MOCMAY_HAS_LLAMA" app/src/main/cpp/mocmay_llm_jni.cpp
           grep -q "nativeCancelGeneration" app/src/main/java/com/mocmay/ai/NativeLlmBridge.java
-          grep -q "versionName '29.0.0'" app/build.gradle
+          grep -q "versionName '31.0.0'" app/build.gradle
       - name: Check accidental secrets
         shell: bash
         run: |

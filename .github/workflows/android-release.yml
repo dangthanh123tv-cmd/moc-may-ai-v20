@@ -1,13 +1,9 @@
-name: Mộc Mây AI v29 Android
+name: Mộc Mây AI v31 Android
 
 on:
   workflow_dispatch:
   push:
-    branches:
-      - main
-      - master
-      - moc-may-ai-v29
-    tags: ['v29.*']
+    tags: ['v31.*']
 
 permissions:
   contents: read
@@ -54,6 +50,6 @@ jobs:
       - name: Upload APK
         uses: actions/upload-artifact@v6
         with:
-          name: moc-may-ai-v29-debug
+          name: moc-may-ai-v31-debug
           path: app/build/outputs/apk/debug/*.apk
           if-no-files-found: error
