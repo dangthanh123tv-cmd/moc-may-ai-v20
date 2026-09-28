@@ -2,7 +2,7 @@ cmake_minimum_required(VERSION 3.22.1)
 project(mocmay_llm LANGUAGES C CXX)
 
 option(MOCMAY_WITH_LLAMA_CPP "Build against vendored llama.cpp" OFF)
-set(MOCMAY_LLAMA_CPP_DIR "${CMAKE_CURRENT_LIST_DIR}/../../../../../third_party/llama.cpp" CACHE PATH "llama.cpp source directory")
+set(MOCMAY_LLAMA_CPP_DIR "${CMAKE_CURRENT_LIST_DIR}/../../../../third_party/llama.cpp" CACHE PATH "llama.cpp source directory")
 
 add_library(mocmay_llm SHARED mocmay_llm_jni.cpp)
 find_library(log-lib log)
