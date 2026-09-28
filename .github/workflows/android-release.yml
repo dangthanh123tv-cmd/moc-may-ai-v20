@@ -3,6 +3,10 @@ name: Mộc Mây AI v29 Android
 on:
   workflow_dispatch:
   push:
+    branches:
+      - main
+      - master
+      - moc-may-ai-v29
     tags: ['v29.*']
 
 permissions:
