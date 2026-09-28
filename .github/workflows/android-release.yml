@@ -1,0 +1,55 @@
+name: Mộc Mây AI v29 Android
+
+on:
+  workflow_dispatch:
+  push:
+    tags: ['v29.*']
+
+permissions:
+  contents: read
+
+concurrency:
+  group: android-${{ github.ref }}
+  cancel-in-progress: true
+
+env:
+  ANDROID_NDK_VERSION: '29.0.14206865'
+
+jobs:
+  build:
+    runs-on: ubuntu-24.04
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v6
+
+      - name: Setup Java
+        uses: actions/setup-java@v5
+        with:
+          distribution: temurin
+          java-version: '17'
+          cache: gradle
+
+      - name: Setup Android SDK
+        uses: android-actions/setup-android@v4
+
+      - name: Install Android SDK/NDK
+        run: |
+          sdkmanager "platforms;android-35" "build-tools;35.0.0" "ndk;${ANDROID_NDK_VERSION}"
+
+      - name: Fetch pinned llama.cpp
+        run: ./scripts/fetch-llama.sh
+
+      - name: Setup Gradle
+        uses: gradle/actions/setup-gradle@v6
+        with:
+          gradle-version: '8.10'
+
+      - name: Build debug APK
+        run: gradle assembleDebug -PMOCMAY_WITH_LLAMA_CPP=true --no-daemon --stacktrace
+
+      - name: Upload APK
+        uses: actions/upload-artifact@v6
+        with:
+          name: moc-may-ai-v29-debug
+          path: app/build/outputs/apk/debug/*.apk
+          if-no-files-found: error
